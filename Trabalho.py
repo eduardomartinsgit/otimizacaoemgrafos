@@ -64,14 +64,23 @@ class ListaAdjGrafo:
                 def __init__(self):
                         self.explorado = None
 
+        def inserir(self,lista,vizinho,novaAresta): #METODO AUXILIAR PARA INSERÇÃO DE UMA NOVA ARESTA 
+                novoNo = GrafoLAdj.NoAresta()
+                novoNo.viz = vizinho
+                novoNo.prox = lista
+                novoNo.e = novaAresta
+                lista = novoNo
+                return lista
+
 
         def inserirAresta(self, grafoJSON):
                 arestas = grafoJSON['arestas']
                 for i in range(0, len(arestas)):
                         novaAresta = GrafoLAdj.Aresta()
-                        u = int(int(arestas[i][0]))
-                        v = int(int(arestas[i][1]))
-                        
+                        u = int(arestas[i][0])
+                        v = iint(arestas[i][1])
+                        self.L[u]=self.inserir(self.L[u],v,novaAresta)
+                        self.L[v]=self.inserir(self.L[v],u,novaAresta)                        
 
 # FIM DA LISTA DE ADJACENCIAS
 
