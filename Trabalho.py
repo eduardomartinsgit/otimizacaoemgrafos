@@ -39,6 +39,24 @@ class MatrizAdjGrafo:
 
 #FIM DA MATRIZ DE ADJACENCIAS
 
+
+class ListaAdjGrafo:
+        def __init__(self):
+                self.L = []
+                self.v = None
+                self.e = None
+
+        def lerGrafoJSON(self, nomeArquivo):
+                with open(nomeArquivo) as json_file:
+                        grafoJSON = json.load(json_file)
+                        self.v = len(grafoJSON['vertices'])
+                        self.e = len(grafoJSON['arestas'])
+
+
+
+
+# FIM DA LISTA DE ADJACENCIAS
+
 grafo = MatrizAdjGrafo()
 grafoJSON = grafo.lerGrafoJSON('grafo.txt')
 grafo.inserirAresta(grafoJSON)
