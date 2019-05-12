@@ -27,8 +27,6 @@ class MatrizAdjGrafo:
         def inserirAresta(self, grafoJSON):
                 arestas = grafoJSON['arestas']
                 for i in range(0, len(arestas)):
-                        print (arestas[i][0])
-                        print (arestas[i][1])
                         self.m[int(arestas[i][0]) - 1][int(arestas[i][1]) - 1] = int(1)
                         self.m[int(arestas[i][1]) - 1][int(arestas[i][0]) - 1] = int(1)
 
@@ -51,17 +49,41 @@ class ListaAdjGrafo:
                         grafoJSON = json.load(json_file)
                         self.v = len(grafoJSON['vertices'])
                         self.e = len(grafoJSON['arestas'])
+                        self.L = [None]*(self.v+1)
+                        for i in range(self.v+1): #Criação da lista e inicializando com None
+                                self.L[i]=ListaAdjGrafo.NoAresta()
+                return grafoJSON
+                                
+        class NoAresta(object): #CONFORME O SLIDE 
+                def __init__(self):
+                        self.viz = None
+                        self.e = None
+                        self.prox = None
+
+        class Aresta(object): #CONFORME O SLIDE 
+                def __init__(self):
+                        self.explorado = None
 
 
-
+        def inserirAresta(self, grafoJSON):
+                arestas = grafoJSON['arestas']
+                for i in range(0, len(arestas)):
+                        novaAresta = GrafoLAdj.Aresta()
+                        u = int(int(arestas[i][0]))
+                        v = int(int(arestas[i][1]))
+                        
 
 # FIM DA LISTA DE ADJACENCIAS
 
 grafo = MatrizAdjGrafo()
 grafoJSON = grafo.lerGrafoJSON('grafo.txt')
 grafo.inserirAresta(grafoJSON)
-grafo.imprimirGrafo(grafo.m)
-print ()
-print ()
+#grafo.imprimirGrafo(grafo.m)
+#print ()
+#print ()
 grafo.removerAresta(1,2)
-grafo.imprimirGrafo(grafo.m)
+#grafo.imprimirGrafo(grafo.m)
+
+
+
+graph = ListaAdjGrafo()
