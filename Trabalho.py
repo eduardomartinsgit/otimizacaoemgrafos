@@ -32,9 +32,18 @@ class MatrizAdjGrafo:
                         self.m[int(arestas[i][0]) - 1][int(arestas[i][1]) - 1] = int(1)
                         self.m[int(arestas[i][1]) - 1][int(arestas[i][0]) - 1] = int(1)
 
+        def removerAresta(self, linha, coluna):
+                self.m[linha][coluna]=0
+                self.m[coluna][linha]=0
+                self.e= self.e - 1
+
 #FIM DA MATRIZ DE ADJACENCIAS
 
 grafo = MatrizAdjGrafo()
 grafoJSON = grafo.lerGrafoJSON('grafo.txt')
 grafo.inserirAresta(grafoJSON)
+grafo.imprimirGrafo(grafo.m)
+print ()
+print ()
+grafo.removerAresta(1,2)
 grafo.imprimirGrafo(grafo.m)
