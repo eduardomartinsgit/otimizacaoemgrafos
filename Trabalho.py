@@ -1,13 +1,11 @@
-import re
-import time
+import json
     
 class MatrizAdjGrafo:
 
         def lerGrafoJSON(self, nomeArquivo):
-                f = open(nomeArquivo, 'r') #LEITURA DO ARQUIVO DE ENTRADA, NO MODO 'R' SOMENTE LEITURA
-                json = f.readline()
-                return json 
-        
+                with open(nomeArquivo) as json_file:
+                        grafoJSON = json.load(json_file) 
+                        print (grafoJSON)
         def __init__(self):
                 self.v = 0
                 self.e = 0
@@ -16,3 +14,4 @@ class MatrizAdjGrafo:
 #FIM DA MATRIZ DE ADJACENCIAS
 
 grafoMatriz = MatrizAdjGrafo()
+grafoMatriz.lerGrafoJSON('grafo.txt')
