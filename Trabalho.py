@@ -65,7 +65,7 @@ class ListaAdjGrafo:
                         self.explorado = None
 
         def inserir(self,lista,vizinho,novaAresta): #METODO AUXILIAR PARA INSERÇÃO DE UMA NOVA ARESTA 
-                novoNo = GrafoLAdj.NoAresta()
+                novoNo = ListaAdjGrafo.NoAresta()
                 novoNo.viz = vizinho
                 novoNo.prox = lista
                 novoNo.e = novaAresta
@@ -76,11 +76,16 @@ class ListaAdjGrafo:
         def inserirAresta(self, grafoJSON):
                 arestas = grafoJSON['arestas']
                 for i in range(0, len(arestas)):
-                        novaAresta = GrafoLAdj.Aresta()
+                        novaAresta = ListaAdjGrafo.Aresta()
                         u = int(arestas[i][0])
-                        v = iint(arestas[i][1])
+                        v = int(arestas[i][1])
                         self.L[u]=self.inserir(self.L[u],v,novaAresta)
-                        self.L[v]=self.inserir(self.L[v],u,novaAresta)                        
+                        self.L[v]=self.inserir(self.L[v],u,novaAresta)
+
+
+        def imprimirVizinhos(self):
+                for i in range(self.e):
+                        print(self.L[i].viz)
 
 # FIM DA LISTA DE ADJACENCIAS
 
@@ -96,3 +101,6 @@ grafo.removerAresta(1,2)
 
 
 graph = ListaAdjGrafo()
+grafoJSON = graph.lerGrafoJSON('grafo.txt')
+graph.inserirAresta(grafoJSON)
+graph.imprimirVizinhos()
