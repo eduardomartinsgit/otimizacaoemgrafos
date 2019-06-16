@@ -243,13 +243,15 @@ class ListaAdjGrafo:
                 self.L = []
                 self.v = None
                 self.e = None
-
+                self.distancia = []
+                
         def lerGrafoJSON(self, nomeArquivo):
                 with open(nomeArquivo) as json_file:
                         grafoJSON = json.load(json_file)
                         self.v = len(grafoJSON['vertices'])
                         self.e = len(grafoJSON['arestas'])
                         self.L = [None]*(self.v+1)
+                        self.distancia = [None]*(self.v+1)
                         for i in range(self.v+1): #Criação da lista e inicializando com None
                                 self.L[i] = ListaAdjGrafo.NoAresta()
                 return grafoJSON
@@ -262,6 +264,7 @@ class ListaAdjGrafo:
                         self.vizitado = False
                         self.descoberta = False
                         self.explorado = False
+
 
         class Aresta(object): #CONFORME O SLIDE 
                 def __init__(self):
@@ -389,7 +392,42 @@ class ListaAdjGrafo:
                     else:
                         self.L[v].explorado = True
                         self.L[v].descoberta = True
-                        self.BuscaProfundidadeRecursiva(i)                                
+                        self.BuscaProfundidadeRecursiva(i)
+
+        def BuscaLargura(self, v): #MÉTODO DE BUSCA EM LARGURA, SLIDE 57
+            f = Fila()
+            self.L[v].visitado = True
+            f.insere(v)
+            while(f.length() > 0):
+                v = f.remove()
+                for i in range(self.v):
+                    if(self.L[v].e == v):
+                        if(self.L[i].visitado):
+                            if(not self.L[v].explorado):
+                                self.L[v].explorado = True
+                        else:
+                            self.L[v].explorado = True
+                            self.L[v].descoberta = True
+                            self.L[v].vizitado = True
+
+        def DeterminarDistancias(self, v): #MÉTODO DE DETERMINAR DISTANCIAS, SLIDE 62
+            f = Fila()
+            self.L[v].visitado = True
+            self.distancia[v] = 0
+            f.insere(v)
+            while(f.length() > 0):
+                p = f.remove()
+                for i in range(self.v):
+                    if(self.L[v].vizitado):
+                        if(not self.L[v].explorado):
+                            self.L[v].explorado = True
+                    else:
+                        self.L[v].explorado = True
+                        self.L[v].descoberto = True
+                        self.L[v].vizitado = True
+                        self.distancia[v] = p
+                        f.insere(v+1)
+                            
         
 # FIM DA LISTA DE ADJACENCIAS
 
@@ -428,3 +466,5 @@ print (graph.EhArvoreConexoCiclo())
 print (graph.ObterFlorestaGeradora())
 graph.BuscaProfundidade(0)
 graph.BuscaProfundidadeRecursiva(1)
+graph.BuscaLargura(1)
+graph.DeterminarDistancias(2)
