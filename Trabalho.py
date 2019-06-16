@@ -1,5 +1,22 @@
 import json
     
+	
+#INICIO DA IMPLEMENTAÇÃO DE UMA FILA COMO ESTRUTURA AUXILIAR
+class Fila():
+    def __init__(self):
+        self.dados = []
+
+    def insere(self, elemento):
+        self.dados.append(elemento)
+
+    def remove(self):
+        return self.dados.pop(0) 
+    
+    def lenght(self):
+        return len(self.dados)	
+	
+#FIM DA IMPLEMENTAÇÃO DE UMA FILA COMO ESTRUTURA AUXILIAR	
+	
 #INICIO DA IMPLEMENTAÇÃO DE UMA PILHA COMO ESTRUTURA AUXILIAR
 class Pilha():
     def __init__(self):
@@ -14,7 +31,6 @@ class Pilha():
     def lenght(self):
         return len(self.dados)	
 #FIM DA IMPLEMENTAÇÃO DE UMA PILHA COMO ESTRUTURA AUXILIAR		
-
 
 #INICIO DA MATRIZ DE ADJACENCIAS	
 class MatrizAdjGrafo:
@@ -37,7 +53,7 @@ class MatrizAdjGrafo:
         def imprimirGrafo(self,grafo):
                 for i in range(self.v):
                         for j in range(self.v):
-                                print(grafo[i][j], end=' ') # end=' ' para o print aparecer no console como uma matriz
+                                print(grafo[i][j], end=' ') # Imprimir no console em forma de matriz
                         print('')
 
 
