@@ -12,7 +12,7 @@ class Fila():
     def remove(self):
         return self.dados.pop(0) 
     
-    def lenght(self):
+    def length(self):
         return len(self.dados)	
 	
 #FIM DA IMPLEMENTAÇÃO DE UMA FILA COMO ESTRUTURA AUXILIAR	
@@ -20,7 +20,7 @@ class Fila():
 #INICIO DA IMPLEMENTAÇÃO DE UMA PILHA COMO ESTRUTURA AUXILIAR
 class Pilha():
     def __init__(self):
-        self.dados = []
+        self.dados = [0]
 
     def empilha(self, elemento):
         self.dados.append(elemento)
@@ -28,7 +28,7 @@ class Pilha():
     def desempilha(self):
         return self.dados.pop()
     
-    def lenght(self):
+    def length(self):
         return len(self.dados)	
 #FIM DA IMPLEMENTAÇÃO DE UMA PILHA COMO ESTRUTURA AUXILIAR		
 
@@ -204,8 +204,53 @@ class MatrizAdjGrafo:
                         t.m[i][j] = 1
             return t
 
-        
-				
+        def BuscaProfundidade(self,v): #MÉTODO DE BUSCA EM PROFUNDIDADE, SLIDE 26
+            self.rotular()
+            p = Pilha()
+            self.visitado[v] = True
+            p.empilha(v)
+            p.empilha(self.PrimeiroViz(v))
+            while(p.length() > 0):
+                v = p.desempilha()
+                if(p.length() > 1):
+                    w = p.desempilha()
+                    if(w > 0):
+                        p.empilha(v)
+                        p.empilha(self.ProximoViz(v,w))
+                        if(self.visitado[w]):
+                            if (not self.explorado[v][w]):
+                                self.explorado[v][w] = True
+                            else:
+                                self.explorado[v][w] = True
+                                self.descoberta[v][w] = True
+                                self.visitado[w] = True
+                                p.empilha(w)
+                                p.empilha(self.PrimeiroViz(w))
+
+        def PrimeiroViz(self,v):
+            for i in range(self.v):
+                if(self.m[v][i]==1):
+                    return i
+            return 0
+
+        def ProximoViz(self,v, u):
+            for i in range(u ,self.v):
+                if(self.m[v][i]==1):
+                    return i
+            return 0
+
+        def BuscaProfundidadeRecursiva(self, v): #MÉTODO DE BUSCA EM PROFUNDIDADE RECURSIVA, SLIDE 27
+            self.visitado[v] = True
+            for i in range(self.v):
+                if(self.m[v][i] == 1):
+                    if(self.visitado[i]):
+                        if(not self.explorado[v][i]):
+                            self.explorado[v][i] = True
+                    else:
+                        self.explorado[v][i] = True
+                        self.descoberta[v][i] = True
+                        self.BuscaProfundidadeRecursiva(i)
+        				
 
 #FIM DA MATRIZ DE ADJACENCIAS
 
@@ -222,6 +267,9 @@ print (grafo.EhArvore())
 print (grafo.EhConexo())
 print (grafo.EhArvoreConexoCiclo())
 print (grafo.ObterFlorestaGeradora().m)
+print (grafo.PrimeiroViz(2))
+grafo.BuscaProfundidade(0)
+grafo.BuscaProfundidadeRecursiva(2)
 
 #graph = ListaAdjGrafo()
 #grafoJSON = graph.lerGrafoJSON('grafo.txt')
