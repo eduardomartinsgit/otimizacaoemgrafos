@@ -116,7 +116,7 @@ class MatrizAdjGrafo:
                     if(self.m[x][y]==1):
                         if(not self.descoberta[x][y]):
                             return True
-            return False
+                return False
 
         
         def EhFloresta(self): #DECISÃO DE O GRAFO É FLORESTA, SLIDE 11
@@ -259,14 +259,17 @@ class ListaAdjGrafo:
                         self.viz = None
                         self.e = None
                         self.prox = None
+                        self.vizitado = False
+                        self.descoberta = False
 
         class Aresta(object): #CONFORME O SLIDE 
                 def __init__(self):
                         self.explorado = False
-                        self.vizitado = False
+
 
         def inserir(self, lista, vizinho, novaAresta): #METODO AUXILIAR PARA INSERÇÃO DE UMA NOVA ARESTA 
                 novoNo = ListaAdjGrafo.NoAresta()
+                novoNo.descoberta = True
                 novoNo.viz = vizinho
                 novoNo.prox = lista
                 novoNo.e = novaAresta
@@ -304,6 +307,31 @@ class ListaAdjGrafo:
                     return False
             return True
 
+        def TemCiclo(self): #MÉTODO QUE VERIFICA SE TEM CICLO NO GRAFO, SLIDE 10
+            self.BuscaCompleta()
+            for x in range(self.v):
+                if(not self.L[x].descoberta):
+                    return True
+            return False
+
+        def EhFloresta(self): #DECISÃO DE O GRAFO É FLORESTA, SLIDE 11
+            return not self.TemCiclo()
+
+        def EhArvore(self): #DECISÃO DE O GRAFO É UMA ARVORE, SLIDE 12
+            self.BuscaCompleta()
+            for i in range(self.v):
+                if(not self.L[i].vizitado):
+                    return False
+            for i in range(self.v):
+                for j in range(self.v):
+                    if(not self.L[i].descoberta):
+                        return False
+            return True
+        
+        def EhArvoreConexoCiclo(self): #DECISÃO DE O GRAFO É UMA ARVORE, SLIDE 13
+            return self.EhConexo() and not self.TemCiclo()
+
+        
 # FIM DA LISTA DE ADJACENCIAS
 
 '''
@@ -315,6 +343,7 @@ grafo.Busca(1)
 grafo.BuscaR()
 grafo.BuscaCompleta()
 print (grafo.TemCiclo())
+
 print (grafo.EhFloresta())
 print (grafo.EhArvore())
 print (grafo.EhConexo())
@@ -331,6 +360,9 @@ print (grafo.distancia)
 graph = ListaAdjGrafo()
 grafoJSON = graph.lerGrafoJSON('grafo.txt')
 graph.inserirAresta(grafoJSON)
-
-print (graph.BuscaCompleta())
+graph.BuscaCompleta()
 print (graph.EhConexo())
+print (graph.TemCiclo())
+print (graph.EhFloresta())
+print (graph.EhArvore())
+print (graph.EhArvoreConexoCiclo())
