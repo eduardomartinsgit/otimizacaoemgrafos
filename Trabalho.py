@@ -189,7 +189,22 @@ class MatrizAdjGrafo:
 
 
         def EhArvoreConexoCiclo(self): #DECISÃO DE O GRAFO É UMA ARVORE, SLIDE 13
-            return self.EhConexo() and not self.TemCiclo()       
+            return self.EhConexo() and not self.TemCiclo()
+
+        def ObterFlorestaGeradora(self):#MÉTODO PARA OBTER A FLORESTA GERADORA, SLIDE 17
+            t = MatrizAdjGrafo()
+            t.v = self.v
+            t.e = []
+            for i in range(t.v):
+                t.m.append([0]*t.v)
+                self.BuscaCompleta()
+            for i in range(self.v):
+                for j in range(self.v):
+                    if(self.descoberta[i][j]):
+                        t.m[i][j] = 1
+            return t
+
+        
 				
 
 #FIM DA MATRIZ DE ADJACENCIAS
@@ -206,7 +221,7 @@ print (grafo.EhFloresta())
 print (grafo.EhArvore())
 print (grafo.EhConexo())
 print (grafo.EhArvoreConexoCiclo())
-
+print (grafo.ObterFlorestaGeradora().m)
 
 #graph = ListaAdjGrafo()
 #grafoJSON = graph.lerGrafoJSON('grafo.txt')
