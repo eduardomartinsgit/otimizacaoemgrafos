@@ -161,7 +161,11 @@ class MatrizAdjGrafo:
                     if(self.m[x][y]==1):
                         if(not self.descoberta[x][y]):
                             return True
-            return False                    
+            return False
+
+        
+        def EhFloresta(self): #MÉTODO QUE VERIFICA SE TEM GRAFO É UMA FLORESTA, SLIDE 11
+            return not self.TemCiclo()        
 				
 
 #FIM DA MATRIZ DE ADJACENCIAS
@@ -174,6 +178,7 @@ grafo.Busca(1)
 grafo.BuscaR()
 grafo.BuscaCompleta()
 print (grafo.TemCiclo())
+print (grafo.EhFloresta())
 
 
 #graph = ListaAdjGrafo()
