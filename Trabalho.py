@@ -154,6 +154,14 @@ class MatrizAdjGrafo:
                 if( not self.visitado[i]):
                     self.Busca(i)
 
+        def EhConexo(self): #MÉTODO QUE VERIFICA SE UM DETERMINADO GRAFO É CONEXO, SLIDE 9
+            self.BuscaR()
+            for i in range(self.v):
+                if(not self.visitado[i]):
+                    return False
+                return True
+
+
         def TemCiclo(self): #MÉTODO QUE VERIFICA SE TEM CICLO NO GRAFO, SLIDE 10
             self.BuscaCompleta()
             for x in range(self.v):
@@ -177,7 +185,11 @@ class MatrizAdjGrafo:
                     if(self.m[i][j]==1):
                         if(not self.descoberta[i][j]):
                             return False
-            return True        
+            return True
+
+
+        def EhArvoreConexoCiclo(self): #DECISÃO DE O GRAFO É UMA ARVORE, SLIDE 13
+            return self.EhConexo() and not self.TemCiclo()       
 				
 
 #FIM DA MATRIZ DE ADJACENCIAS
@@ -192,6 +204,8 @@ grafo.BuscaCompleta()
 print (grafo.TemCiclo())
 print (grafo.EhFloresta())
 print (grafo.EhArvore())
+print (grafo.EhConexo())
+print (grafo.EhArvoreConexoCiclo())
 
 
 #graph = ListaAdjGrafo()
