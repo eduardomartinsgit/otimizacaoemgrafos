@@ -261,12 +261,13 @@ class ListaAdjGrafo:
                         self.prox = None
                         self.vizitado = False
                         self.descoberta = False
+                        self.explorado = False
 
         class Aresta(object): #CONFORME O SLIDE 
                 def __init__(self):
-                        self.explorado = False
+                    self.explorado = False
 
-
+                    
         def inserir(self, lista, vizinho, novaAresta): #METODO AUXILIAR PARA INSERÇÃO DE UMA NOVA ARESTA 
                 novoNo = ListaAdjGrafo.NoAresta()
                 novoNo.descoberta = True
@@ -331,6 +332,64 @@ class ListaAdjGrafo:
         def EhArvoreConexoCiclo(self): #DECISÃO DE O GRAFO É UMA ARVORE, SLIDE 13
             return self.EhConexo() and not self.TemCiclo()
 
+
+        def ObterFlorestaGeradora(self):#MÉTODO PARA OBTER A FLORESTA GERADORA, SLIDE 17
+            t = ListaAdjGrafo()
+            t.v = self.v
+            t.e = None
+            for i in range(t.v):
+                t.L.append([0]*t.v)
+                self.BuscaCompleta()
+            for i in range(self.v):
+                if(self.L[i].descoberta):
+                    t.e = 1
+            return t
+
+        def PrimeiroViz(self,v):
+            for i in range(self.v):
+                if(self.L[v].e == 1):
+                    return i
+            return 0
+
+        def ProximoViz(self,v, u):
+            for i in range(u ,self.v):
+                if(self.L[v].e == 1):
+                    return i
+            return 0
+
+        def BuscaProfundidade(self,v): #MÉTODO DE BUSCA EM PROFUNDIDADE, SLIDE 26
+            p = Pilha()
+            self.L[v].vizitado = True
+            p.empilha(v)
+            p.empilha(self.PrimeiroViz(v))
+            while(p.length() > 0):
+                v = p.desempilha()
+                if(p.length() > 1):
+                    w = p.desempilha()
+                    if(w > 0):
+                        p.empilha(v)
+                        p.empilha(self.ProximoViz(v,w))
+                        if(self.L[w].vizitado):
+                            if (not self.L[v].explorado):
+                                self.L[v].explorado = True
+                            else:
+                                self.L[v].explorado = True
+                                self.L[v].descoberta = True
+                                self.L[v].visitado = True
+                                p.empilha(w)
+                                p.empilha(self.PrimeiroViz(w))
+
+        def BuscaProfundidadeRecursiva(self, v): #MÉTODO DE BUSCA EM PROFUNDIDADE RECURSIVA, SLIDE 27
+            self.L[v].visitado = True
+            for i in range(self.v):
+                if(self.L[i].e == v):
+                    if(self.L[v].visitado):
+                        if(not self.L[v].explorado):
+                            self.L[v].explorado = True
+                    else:
+                        self.L[v].explorado = True
+                        self.L[v].descoberta = True
+                        self.BuscaProfundidadeRecursiva(i)                                
         
 # FIM DA LISTA DE ADJACENCIAS
 
@@ -366,3 +425,6 @@ print (graph.TemCiclo())
 print (graph.EhFloresta())
 print (graph.EhArvore())
 print (graph.EhArvoreConexoCiclo())
+print (graph.ObterFlorestaGeradora())
+graph.BuscaProfundidade(0)
+graph.BuscaProfundidadeRecursiva(1)
