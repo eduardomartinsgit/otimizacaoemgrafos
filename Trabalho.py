@@ -1,5 +1,22 @@
 import json
     
+#INICIO DA IMPLEMENTAÇÃO DE UMA PILHA COMO ESTRUTURA AUXILIAR
+class Pilha():
+    def __init__(self):
+        self.dados = []
+
+    def empilha(self, elemento):
+        self.dados.append(elemento)
+
+    def desempilha(self):
+        return self.dados.pop()
+    
+    def lenght(self):
+        return len(self.dados)	
+#FIM DA IMPLEMENTAÇÃO DE UMA PILHA COMO ESTRUTURA AUXILIAR		
+
+
+#INICIO DA MATRIZ DE ADJACENCIAS	
 class MatrizAdjGrafo:
 
         def lerGrafoJSON(self, nomeArquivo):
