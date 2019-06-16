@@ -149,10 +149,19 @@ class MatrizAdjGrafo:
                 self.explorado.append([False]*self.v)
                 self.descoberta.append([False]*self.v)
                 
-        def BuscaCompleta(self): #MÉTODO DE BUSCA COMPLETA EM UM DETERMINADO  GRAFO, SLIDE 6
+        def BuscaCompleta(self): #MÉTODO DE BUSCA COMPLETA EM UM DETERMINADO GRAFO, SLIDE 6
             for i in range(self.v):
                 if( not self.visitado[i]):
-                    self.Busca(i)                
+                    self.Busca(i)
+
+        def TemCiclo(self): #MÉTODO QUE VERIFICA SE TEM CICLO NO GRAFO, SLIDE 10
+            self.BuscaCompleta()
+            for x in range(self.v):
+                for y in range(self.v):
+                    if(self.m[x][y]==1):
+                        if(not self.descoberta[x][y]):
+                            return True
+            return False                    
 				
 
 #FIM DA MATRIZ DE ADJACENCIAS
@@ -164,6 +173,7 @@ grafo.imprimirGrafo(grafo.m)
 grafo.Busca(1)
 grafo.BuscaR()
 grafo.BuscaCompleta()
+print (grafo.TemCiclo())
 
 
 #graph = ListaAdjGrafo()
