@@ -138,7 +138,16 @@ class MatrizAdjGrafo:
                         if(not self.visitado[y]):
                             self.visitado[y] = True
                             self.descoberta[x][y] = True
-            
+                            
+        def BuscaR(self): #MÉTODO DE BUSCA DE UM DETERMINADO ELEMENTO NO GRAFO, SLIDE 5
+            self.rotular()
+            self.Busca(1)
+
+        def rotular(self): #MÉTODO ROTULAR, SLIDE 5
+            self.visitado= [False]*self.v
+            for i in range(self.v):
+                self.explorado.append([False]*self.v)
+                self.descoberta.append([False]*self.v)
 				
 
 #FIM DA MATRIZ DE ADJACENCIAS
@@ -148,7 +157,7 @@ grafoJSON = grafo.lerGrafoJSON('grafo.txt')
 grafo.inserirAresta(grafoJSON)
 grafo.imprimirGrafo(grafo.m)
 grafo.Busca(1)
-
+grafo.BuscaR()
 
 
 #graph = ListaAdjGrafo()
