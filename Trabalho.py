@@ -148,6 +148,11 @@ class MatrizAdjGrafo:
             for i in range(self.v):
                 self.explorado.append([False]*self.v)
                 self.descoberta.append([False]*self.v)
+                
+        def BuscaCompleta(self): #MÉTODO DE BUSCA COMPLETA EM UM DETERMINADO  GRAFO, SLIDE 6
+            for i in range(self.v):
+                if( not self.visitado[i]):
+                    self.Busca(i)                
 				
 
 #FIM DA MATRIZ DE ADJACENCIAS
@@ -158,6 +163,7 @@ grafo.inserirAresta(grafoJSON)
 grafo.imprimirGrafo(grafo.m)
 grafo.Busca(1)
 grafo.BuscaR()
+grafo.BuscaCompleta()
 
 
 #graph = ListaAdjGrafo()
