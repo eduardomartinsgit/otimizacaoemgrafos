@@ -32,61 +32,6 @@ class Pilha():
         return len(self.dados)	
 #FIM DA IMPLEMENTAÇÃO DE UMA PILHA COMO ESTRUTURA AUXILIAR		
 
-
-# INICIO DA LISTA DE ADJACENCIAS
-class ListaAdjGrafo:
-        def __init__(self):
-                self.L = []
-                self.v = None
-                self.e = None
-
-        def lerGrafoJSON(self, nomeArquivo):
-                with open(nomeArquivo) as json_file:
-                        grafoJSON = json.load(json_file)
-                        self.v = len(grafoJSON['vertices'])
-                        self.e = len(grafoJSON['arestas'])
-                        self.L = [None]*(self.v+1)
-                        for i in range(self.v+1): #Criação da lista e inicializando com None
-                                self.L[i]=ListaAdjGrafo.NoAresta()
-                return grafoJSON
-                                
-        class NoAresta(object): #CONFORME O SLIDE 
-                def __init__(self):
-                        self.viz = None
-                        self.e = None
-                        self.prox = None
-
-        class Aresta(object): #CONFORME O SLIDE 
-                def __init__(self):
-                        self.explorado = None
-
-        def inserir(self,lista,vizinho,novaAresta): #METODO AUXILIAR PARA INSERÇÃO DE UMA NOVA ARESTA 
-                novoNo = ListaAdjGrafo.NoAresta()
-                novoNo.viz = vizinho
-                novoNo.prox = lista
-                novoNo.e = novaAresta
-                lista = novoNo
-                return lista
-
-
-        def inserirAresta(self, grafoJSON):
-                arestas = grafoJSON['arestas']
-                for i in range(0, len(arestas)):
-                        novaAresta = ListaAdjGrafo.Aresta()
-                        u = int(arestas[i][0])
-                        v = int(arestas[i][1])
-                        self.L[u]=self.inserir(self.L[u],v,novaAresta)
-                        self.L[v]=self.inserir(self.L[v],u,novaAresta)
-
-
-        def imprimirVizinhos(self):
-                for i in range(self.e):
-                        print(self.L[i].viz)
-
-# FIM DA LISTA DE ADJACENCIAS
-
-
-
 #INICIO DA MATRIZ DE ADJACENCIAS	
 class MatrizAdjGrafo:
 
@@ -161,7 +106,7 @@ class MatrizAdjGrafo:
             for i in range(self.v):
                 if(not self.visitado[i]):
                     return False
-                return True
+            return True
 
 
         def TemCiclo(self): #MÉTODO QUE VERIFICA SE TEM CICLO NO GRAFO, SLIDE 10
@@ -292,6 +237,76 @@ class MatrizAdjGrafo:
 
 #FIM DA MATRIZ DE ADJACENCIAS
 
+# INICIO DA LISTA DE ADJACENCIAS
+class ListaAdjGrafo:
+        def __init__(self):
+                self.L = []
+                self.v = None
+                self.e = None
+
+        def lerGrafoJSON(self, nomeArquivo):
+                with open(nomeArquivo) as json_file:
+                        grafoJSON = json.load(json_file)
+                        self.v = len(grafoJSON['vertices'])
+                        self.e = len(grafoJSON['arestas'])
+                        self.L = [None]*(self.v+1)
+                        for i in range(self.v+1): #Criação da lista e inicializando com None
+                                self.L[i] = ListaAdjGrafo.NoAresta()
+                return grafoJSON
+                                
+        class NoAresta(object): #CONFORME O SLIDE 
+                def __init__(self):
+                        self.viz = None
+                        self.e = None
+                        self.prox = None
+
+        class Aresta(object): #CONFORME O SLIDE 
+                def __init__(self):
+                        self.explorado = False
+                        self.vizitado = False
+
+        def inserir(self, lista, vizinho, novaAresta): #METODO AUXILIAR PARA INSERÇÃO DE UMA NOVA ARESTA 
+                novoNo = ListaAdjGrafo.NoAresta()
+                novoNo.viz = vizinho
+                novoNo.prox = lista
+                novoNo.e = novaAresta
+                lista = novoNo
+                return lista
+
+
+        def inserirAresta(self, grafoJSON):
+                arestas = grafoJSON['arestas']
+                for i in range(0, len(arestas)):
+                        novaAresta = ListaAdjGrafo.Aresta()
+                        u = int(arestas[i][0])
+                        v = int(arestas[i][1])
+                        self.L[u] = self.inserir(self.L[u], v, novaAresta)
+                        self.L[v] = self.inserir(self.L[v], u, novaAresta)
+
+        def imprimirVizinhos(self):
+            for i in range(self.e):
+                print(self.L[i].viz)
+
+
+        def Busca(self, r):#MÉTODO DE BUSCA DE UM DETERMINADO ELEMENTO NO GRAFO, SLIDE 5
+            self.L[r].explorado = True
+            self.L[r].vizitado = True
+            return self.L[r]
+        
+        def BuscaCompleta(self): #MÉTODO DE BUSCA COMPLETA EM UM DETERMINADO GRAFO, SLIDE 6
+            for i in range(0, len(self.L)):
+                self.Busca(i)
+
+                
+        def EhConexo(self): #MÉTODO QUE VERIFICA SE UM DETERMINADO GRAFO É CONEXO, SLIDE 9
+            for i in range(self.v):
+                if(not self.L[i].vizitado):
+                    return False
+            return True
+
+# FIM DA LISTA DE ADJACENCIAS
+
+'''
 grafo = MatrizAdjGrafo()
 grafoJSON = grafo.lerGrafoJSON('grafo.txt')
 grafo.inserirAresta(grafoJSON)
@@ -311,9 +326,11 @@ grafo.BuscaProfundidadeRecursiva(2)
 grafo.BuscaLargura(2)
 grafo.DeterminarDistancias(2)
 print (grafo.distancia)
+'''
 
+graph = ListaAdjGrafo()
+grafoJSON = graph.lerGrafoJSON('grafo.txt')
+graph.inserirAresta(grafoJSON)
 
-#graph = ListaAdjGrafo()
-#grafoJSON = graph.lerGrafoJSON('grafo.txt')
-#graph.inserirAresta(grafoJSON)
-#graph.imprimirVizinhos()
+print (graph.BuscaCompleta())
+print (graph.EhConexo())
