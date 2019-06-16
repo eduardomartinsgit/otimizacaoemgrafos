@@ -101,6 +101,7 @@ class MatrizAdjGrafo:
                                 self.visitado.append(False)
                                 self.descoberta.append(self.v * [False])
                                 self.explorado.append(self.v * [False])
+                                self.distancia.append(0)
                         return grafoJSON
         def __init__(self):
                 self.v = 0
@@ -108,7 +109,8 @@ class MatrizAdjGrafo:
                 self.m = []
                 self.explorado = []
                 self.descoberta = []
-                self.visitado = []         
+                self.visitado = []
+                self.distancia = []
 
 
         def imprimirGrafo(self,grafo): #MÉTODO PARA IMPRIMIR A ESTRUTURA DO GRAFO 
@@ -250,7 +252,43 @@ class MatrizAdjGrafo:
                         self.explorado[v][i] = True
                         self.descoberta[v][i] = True
                         self.BuscaProfundidadeRecursiva(i)
-        				
+
+        def BuscaLargura(self, v): #MÉTODO DE BUSCA EM LARGURA, SLIDE 57
+            f = Fila()
+            self.visitado[v] = True
+            f.insere(v)
+            while(f.length() > 0):
+                v = f.remove()
+                for i in range(self.v):
+                    if(self.m[v][i] == 1):
+                        if(self.visitado[i]):
+                            if(not self.explorado[v][i]):
+                                self.explorado[v][i] = True
+                        else:
+                            self.explorado[v][i] = True
+                            self.descoberta[v][i] = True
+                            self.visitado[i] = True
+
+        def DeterminarDistancias(self, v): #MÉTODO DE DETERMINAR DISTANCIAS, SLIDE 62
+            f = Fila()
+            self.rotular()
+            self.visitado[v] = True
+            self.distancia[v] = 0
+            f.insere(v)
+            while(f.length() > 0):
+                p = f.remove()
+                for i in range(self.v):
+                    if(self.visitado[i] == 1):
+                        if(not self.explorado[v][i]):
+                            self.explorado[v][i] = True
+                    else:
+                        self.explorado[v][i] = True
+                        self.descoberta[v][i] = True
+                        self.visitado[i] = True
+                        self.distancia[i] = p
+                        f.insere(v+1)
+                        
+                    
 
 #FIM DA MATRIZ DE ADJACENCIAS
 
@@ -270,6 +308,10 @@ print (grafo.ObterFlorestaGeradora().m)
 print (grafo.PrimeiroViz(2))
 grafo.BuscaProfundidade(0)
 grafo.BuscaProfundidadeRecursiva(2)
+grafo.BuscaLargura(2)
+grafo.DeterminarDistancias(2)
+print (grafo.distancia)
+
 
 #graph = ListaAdjGrafo()
 #grafoJSON = graph.lerGrafoJSON('grafo.txt')
