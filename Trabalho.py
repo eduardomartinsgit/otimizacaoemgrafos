@@ -1,4 +1,6 @@
 import json
+import time
+import timeit
     
 	
 #INICIO DA IMPLEMENTAÇÃO DE UMA FILA COMO ESTRUTURA AUXILIAR
@@ -431,40 +433,32 @@ class ListaAdjGrafo:
         
 # FIM DA LISTA DE ADJACENCIAS
 
+
 '''
 grafo = MatrizAdjGrafo()
 grafoJSON = grafo.lerGrafoJSON('grafo.txt')
 grafo.inserirAresta(grafoJSON)
-grafo.imprimirGrafo(grafo.m)
-grafo.Busca(1)
-grafo.BuscaR()
-grafo.BuscaCompleta()
-print (grafo.TemCiclo())
-
-print (grafo.EhFloresta())
-print (grafo.EhArvore())
-print (grafo.EhConexo())
-print (grafo.EhArvoreConexoCiclo())
-print (grafo.ObterFlorestaGeradora().m)
-print (grafo.PrimeiroViz(2))
-grafo.BuscaProfundidade(0)
-grafo.BuscaProfundidadeRecursiva(2)
-grafo.BuscaLargura(2)
-grafo.DeterminarDistancias(2)
 print (grafo.distancia)
 '''
 
 graph = ListaAdjGrafo()
 grafoJSON = graph.lerGrafoJSON('grafo.txt')
 graph.inserirAresta(grafoJSON)
-graph.BuscaCompleta()
-print (graph.EhConexo())
-print (graph.TemCiclo())
-print (graph.EhFloresta())
-print (graph.EhArvore())
-print (graph.EhArvoreConexoCiclo())
-print (graph.ObterFlorestaGeradora())
-graph.BuscaProfundidade(0)
-graph.BuscaProfundidadeRecursiva(1)
-graph.BuscaLargura(1)
-graph.DeterminarDistancias(2)
+
+grafo = MatrizAdjGrafo()
+grafoJSON = grafo.lerGrafoJSON('grafo.txt')
+grafo.inserirAresta(grafoJSON)
+
+inicio = timeit.default_timer()
+graph.DeterminarDistancias(28)
+fim = timeit.default_timer()
+print ('LISTA ADJACENCIAS duracao: %f' % (fim - inicio))
+
+inicio = timeit.default_timer()
+grafo.DeterminarDistancias(1)
+fim = timeit.default_timer()
+print ('MATRIZ ADJACENCIAS duracao: %f' % (fim - inicio))
+
+
+#print (graph.EhConexo())
+
